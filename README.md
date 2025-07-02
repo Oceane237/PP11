@@ -91,9 +91,24 @@ In this exercise you will:
 #### Reflection Questions
 
 1. **How do you link `prev` and `next` pointers correctly using a static array?**
-2. **What are advantages and limitations of compile-time vs. dynamic allocation?**
-3. **How would you extend this static list to include additional data fields?**
+<summary>Each element in the static array nodes [i] is linked to its neighbors using:</summary>
 
+```bash
+ nodes[i].prev = (i > 0) ? &nodes[i - 1] : NULL;
+nodes[i].next = (i < 4) ? &nodes[i + 1] : NULL;
+```
+2. **What are advantages and limitations of compile-time vs. dynamic allocation?**
+   
+**Advantages**
+<summary>compile-time No need to manage memory manually its faster</summary>
+<summary>dynamic allocation  flexible size at runtime , can grow/shrink based on need</summary>
+
+**drawback**
+<summary>compile-time  hat fixed size and not suitable for unknow data size</summary>
+<summary>dynamic allocation hat risk of memory leaks if mismanaged and slightly slower due to heap allocation</summary>
+
+3. **How would you extend this static list to include additional data fields?**
+<summary>By updating DNode structure in dlist.h</summary>
 ---
 
 ### Task 2: Interactive Singly Linked List
@@ -159,8 +174,13 @@ In this exercise you will:
 #### Reflection Questions
 
 1. **Why is `malloc` necessary when adding nodes dynamically?**
+<summary>malloc allows your list to grow dynamically without a fixed size.</summary>
+
 2. **How can you traverse the list to print each node’s address and value?**
+<summary>By  using a loop</summary>
+
 3. **What are the consequences of not freeing the list before exit?**
+<summary>If you don’t call free_list , the memory you allocated with malloc is never returned,resulting in a memory leak.</summary>
 
 ---
 
@@ -244,8 +264,21 @@ gcc -o solutions/json_main solutions/json_main.c solutions/json_list.o -ljansson
 #### Reflection Questions
 
 1. **How does using `getopt` make the program more flexible than `argv[1]`?**
+<summary>getopt allows: named options , order independent arguments,extensibility for future flags</summary>
+
 2. **What happens if the user omits the `-i` option?**
+<summary>The program prints usage and exists</summary>
+
 3. **How can you validate that the JSON file loaded is indeed an array?**
+<summary>By using this syntax</summary>
+
+````bash
+if (!json_is_array(root)) {
+    fprintf(stderr, "Error: root is not a JSON array\n");
+    json_decref(root);
+    return NULL;
+}
+````
 
 ---
 
